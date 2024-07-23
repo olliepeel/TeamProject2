@@ -13,6 +13,9 @@
 ----------------------------------------------------------------------------------------------------------
     Who		Date		Reason
     OSP		2024-07-22	Original Version of Code
+    OSP     2024-07-23  Moved code from Converter class, which removes spaces from a string, into driver
+    class since the Converter class only had one method. Deleted Converter class, added clarifying
+    comments to this class.
 ----------------------------------------------------------------------------------------------------------
 */
 
@@ -36,13 +39,27 @@ public class Driver {
             arrInput.add(strTemp);
         }
         for (int i = 0; i < arrInput.size(); i++){
+            String currExp = arrInput.get(i);
             // Converts the current expression string into an ArrayList
-            System.out.println("\nExpression " + (i+ 1) + ": " + arrInput.get(i));
+            System.out.println("\nExpression " + (i+ 1) + ": " + currExp);
             // Prints the result of the parsed expression to the console
             // Currently only prints the resulting binary tree nodes to ensure the data is correct
             System.out.print("\tResult: ");
-            BTNode<String> root = ExpToBT.toBinaryTree(Converter.toUsableExpression(arrInput.get(i)));
-            // FIXME expresson parser class gets implemented here
+
+            // Remove spaces from current expression
+            StringBuilder sbUsableExp = new StringBuilder();
+            for (int j = 0; j < currExp.length(); j++){
+                char charCurr = currExp.charAt(j);
+                // Add char to string builder if not a space
+                if (charCurr != ' '){
+                    sbUsableExp.append(charCurr);
+                }
+            }
+            currExp = sbUsableExp.toString();
+           
+            // Create binary expression tree from current expression
+            BTNode<String> root = ExpToBT.toBinaryTree(currExp);
+            /* FIXME expresson parser gets implemented here, result is printed to console */
         }
         bufRead.close();
     }
