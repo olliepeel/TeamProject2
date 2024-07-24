@@ -33,6 +33,34 @@ public class InfixToPostfix {
 
         return postfixExp.toString(); //return as a string
     }
+    private static List<String> tokenize(String infixExp) { //input string is tokenized
+        List<String> tokens = new ArrayList<>();
+        StringBuilder sb = new StringBuilder();
+
+        for (int i = 0; i < infixExp.length(); i++) {
+            char ch = infixExp.charAt(i);
+            if (Character.isWhitespace(ch)) {
+                continue; //white spaces are ignored
+             } else if (Character.isDigit(ch) || Character.isLetter(ch)) {
+                 sb.setLength(0);
+                 while (i < infixExp.length() && (Character.isDigit(infixExp.charAt(i)) || Character.isLetter(infixExp.charAt(i)))) {
+                     sb.append(infixExp.charAt(i++));
+                 }
+                 tokens.add(sb.toString());
+                 i--;
+            } else {
+                tokens.add(Character.toString(ch));}
+        }
+        return tokens;
+    }
+    private static boolean isNumber (String str) { 
+        if (str == null || str.isEmpty()) { return false;}//check for empty string
+        for (int i = 0; i < str.length(); i++) {
+            char ch = str.charAt.(i);
+            if (ch < '0' || ch > '9') { return false; }
+        } return true;
+     }
+
     private static boolean isOperator(char ch) {
         // defined operators
         return ch == '+' || ch == '-' || ch == '*' || ch == '/' || ch == '^' || ch == '>' || ch == '=' || ch == '&' || ch == '|' || ch == '%';}
@@ -101,4 +129,16 @@ public class InfixToPostfix {
                 throw new IllegalArgumentException("Invalid Operation: " + root.data); //any unsupported or invalid operators
         }
     }
+    public static int evaluateInfix(String infixExp) {
+        String postfix = convertToPostfix(infixExp); 
+        BTNode<String> root = buildExpressionTree(postfix); // Use postfix for tree
+        return evaluateTree(root); // Evaluate tree
+    }
+     public static String getExpressionAndResult(String infixExp){
+         String postfix = convertToPostfix(infixExp); 
+         int result = evaluateExpression(infixExp);
+         return "Postfix result: " + postfix + "\nResult: " + result; //returns expression and result
+     }
+  }
+ }
 }
