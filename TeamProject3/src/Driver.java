@@ -59,7 +59,7 @@ public class Driver {
            
             // Create binary expression tree from current expression
             BTNode<String> root = ExpToBT.toBinaryTree(currExp);
-            /* FIXME expresson parser gets implemented here, result is printed to console */
+            System.out.print(ExpToBT.evaluateTree(root));
         }
         bufRead.close();
     }

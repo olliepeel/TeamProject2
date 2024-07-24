@@ -13,12 +13,69 @@
 ----------------------------------------------------------------------------------------------------------
     Who		Date		Reason
     OSP		2024-07-22	Created toBinaryTree, build, and precedence methods
+    OSP     2024-07-23  Created evaluateTree method
 ----------------------------------------------------------------------------------------------------------
 */
 
 import java.util.Stack;
 
 public class ExpToBT {
+
+    /**
+     * Recursively evaluates a binary expression tree
+     * @param root : The root of a binary expression tree
+     * @return : The result of the tree being evaluated
+     */
+    public static int evaluateTree(BTNode<String> root){
+        // Base case
+        if (root == null){ return 0; }
+        // Returns the data in the root node if it has no children
+        if ((root.left == null) && (root.right == null)){ return Integer.valueOf(root.data); }
+
+        // Recursively evaluate the left and right nodes
+        int evalLeft = evaluateTree(root.left);
+        int evalRight = evaluateTree(root.right);
+
+        // Handles the evaluation of each operator
+        switch (root.data) {
+            case "^":
+                return ((int)Math.pow(evalLeft, evalRight));
+            case "*":
+                return (evalLeft * evalRight);
+            case "/":
+                if ( evalRight == 0){
+                    throw new ArithmeticException("You cannot divide by zero");
+                }
+                return (evalLeft / evalRight);
+            case "%":
+                if ( evalRight == 0){
+                    throw new ArithmeticException("You cannot divide by zero");
+                }
+                return (evalLeft % evalRight);
+            case "+":
+                return (evalLeft + evalRight);
+            case "-":
+                return (evalLeft - evalRight);
+            case ">":
+                return (evalLeft > evalRight) ? 1 : 0;
+            case ">=":
+                return (evalLeft >= evalRight) ? 1 : 0;
+            case "<":
+                return (evalLeft < evalRight) ? 1 : 0;
+            case "<=":
+                return (evalLeft <= evalRight) ? 1 : 0;
+            case "==":
+                return (evalLeft == evalRight) ? 1 : 0;
+            case "!=":
+                return (evalLeft != evalRight) ? 1 : 0;
+            case "&&":
+                return (((evalLeft != 0) ? true : false) && ((evalRight != 0) ? true : false)) ? 1 : 0;
+            case "||":
+                return (((evalLeft != 0) ? true : false) || ((evalRight != 0) ? true : false)) ? 1 : 0;
+            default:
+                throw new IllegalArgumentException("Operator not supported: " + root.data);
+        }
+    }
 
     /**
      * Turns an infix expression into a binary expression tree. The data in each BTNode is type String
